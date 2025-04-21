@@ -8,9 +8,21 @@
 
 ## 📸 Screenshots
 
-| Login | Dashboard | Vendor | Invoice | Reports |
-|-------|-----------|--------|---------|---------|
-| ![](screenshots/login.png) | ![](screenshots/dashboard.png) | ![](screenshots/vendors.png) | ![](screenshots/invoices.png) | ![](screenshots/reports.png) |
+| **Login Page** | **Register Page** | **Dashboard Overview** |
+|----------------|-------------------|-------------------------|
+| ![](screenshots/login.png) | ![](screenshots/register.png) | ![](screenshots/dashboard.png) |
+
+| **Vendor List** | **Add Vendor** | **Invoices Overview** |
+|-----------------|----------------|------------------------|
+| ![](screenshots/vendors.png) | ![](screenshots/add_vendor.png) | ![](screenshots/invoices.png) |
+
+| **Invoice Detail** | **Add Invoice** | **Analytics / Charts** |
+|--------------------|-----------------|-------------------------|
+| ![](screenshots/invoice_detail.png) | ![](screenshots/add_invoice.png) | ![](screenshots/charts.png) |
+
+| **Report Builder** | **Report Results** | **Vendor Scorecard** |
+|--------------------|--------------------|-----------------------|
+| ![](screenshots/report_builder.png) | ![](screenshots/report_results.png) | ![](screenshots/scorecard.png) |
 
 ---
 
