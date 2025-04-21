@@ -1,0 +1,60 @@
+/* ===== Tag Styling ===== */
+.badge {
+    font-size: 0.85rem;
+    padding: 0.4em 0.6em;
+  }
+  
+  /* ===== Message Threads ===== */
+  .list-group-item small {
+    font-size: 0.75rem;
+    color: #6c757d;
+  }
+  
+  /* ===== Print Optimizations ===== */
+  @media print {
+    nav,
+    .btn,
+    .form-select,
+    .form-control,
+    .form-check,
+    .form-text,
+    form,
+    input,
+    select,
+    textarea {
+      display: none !important;
+    }
+  
+    body * {
+      visibility: hidden;
+    }
+  
+    .container,
+    .container * {
+      visibility: visible;
+    }
+  
+    .container {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+    }
+  
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+  
+    th, td {
+      border: 1px solid #999;
+      padding: 6px;
+      font-size: 0.9rem;
+    }
+  }
+
+  body {
+    background-color: #f8f9fa;
+  }
+  
+  

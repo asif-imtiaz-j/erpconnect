@@ -1,0 +1,80 @@
+{% extends "layout.html" %}
+{% block content %}
+<h2>Invoice #{{ invoice.invoice_number }}</h2>
+
+<div class="row">
+  <div class="col-md-6">
+    <ul class="list-group mb-4">
+      <li class="list-group-item"><strong>Vendor:</strong> {{ invoice.vendor.name }}</li>
+      <li class="list-group-item"><strong>Amount:</strong> ${{ invoice.amount }}</li>
+      <li class="list-group-item"><strong>Status:</strong> {{ invoice.status }}</li>
+      <li class="list-group-item"><strong>Due Date:</strong> {{ invoice.due_date }}</li>
+      <li class="list-group-item"><strong>Category:</strong> {{ invoice.category or 'N/A' }}</li>
+      <li class="list-group-item"><strong>Approved:</strong> {{ '✅' if invoice.approved else '❌' }}</li>
+      <li class="list-group-item"><strong>Tags:</strong>
+        {% for tag in invoice.tags %}
+          <span class="badge bg-secondary me-1">{{ tag.tag }}</span>
+        {% else %}
+          <em>No tags</em>
+        {% endfor %}
+      </li>
+    </ul>
+
+    <h5>Attached File</h5>
+    {% if invoice.upload_path %}
+      <embed src="{{ url_for('static', filename='uploads/' ~ invoice.upload_path.split('/')[-1]) }}"
+             type="application/pdf" width="100%" height="400px" />
+      <a href="{{ url_for('static', filename='uploads/' ~ invoice.upload_path.split('/')[-1]) }}"
+         class="btn btn-outline-secondary mt-2" download>Download PDF</a>
+    {% else %}
+      <p class="text-muted">No file uploaded.</p>
+    {% endif %}
+  </div>
+
+  <div class="col-md-6">
+    <h5>Add Note</h5>
+    <form method="POST" action="{{ url_for('main.add_annotation', invoice_id=invoice.id) }}">
+      {{ annotation_form.hidden_tag() }}
+      {{ annotation_form.content(class="form-control mb-2", rows=3) }}
+      {{ annotation_form.submit(class="btn btn-sm btn-primary") }}
+    </form>
+
+    <hr>
+
+    <h5>Annotations</h5>
+    <ul class="list-group">
+      {% for note in invoice.annotations %}
+        <li class="list-group-item">
+          <small class="text-muted">{{ note.created_at.strftime('%Y-%m-%d') }}</small><br />
+          {{ note.content }}
+        </li>
+      {% else %}
+        <li class="list-group-item"><em>No annotations</em></li>
+      {% endfor %}
+    </ul>
+
+    <hr>
+
+    <h5>Messages</h5>
+    <form method="POST" action="{{ url_for('main.add_invoice_message', invoice_id=invoice.id) }}">
+      {{ message_form.hidden_tag() }}
+      {{ message_form.message(class="form-control mb-2", rows=2) }}
+      {{ message_form.submit(class="btn btn-sm btn-secondary") }}
+    </form>
+
+    <ul class="list-group mt-3">
+      {% for msg in invoice.messages %}
+        <li class="list-group-item">
+          <strong>{{ msg.sender }}</strong>
+          <small class="text-muted float-end">{{ msg.created_at.strftime('%Y-%m-%d') }}</small>
+          <br />{{ msg.message }}
+        </li>
+      {% else %}
+        <li class="list-group-item"><em>No messages yet</em></li>
+      {% endfor %}
+    </ul>
+  </div>
+</div>
+
+<a href="{{ url_for('main.invoices') }}" class="btn btn-secondary mt-4">← Back to Invoices</a>
+{% endblock %}

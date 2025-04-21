@@ -1,0 +1,99 @@
+{% extends "layout.html" %}
+{% block content %}
+<h2 class="text-center">Dashboard</h2>
+
+<div class="row mt-4">
+  <div class="col-md-4">
+    <div class="card text-white bg-primary mb-3">
+      <div class="card-body">
+        <h5 class="card-title">Total Vendors</h5>
+        <p class="card-text fs-4">{{ total_vendors }}</p>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card text-white bg-success mb-3">
+      <div class="card-body">
+        <h5 class="card-title">Total Invoices</h5>
+        <p class="card-text fs-4">{{ total_invoices }}</p>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card text-white bg-danger mb-3">
+      <div class="card-body">
+        <h5 class="card-title">Unpaid Total</h5>
+        <p class="card-text fs-4">${{ unpaid_total }}</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr>
+
+<div class="row mt-4">
+  <div class="col-md-6">
+    <h5 class="text-center">Invoice Status Summary</h5>
+    <div style="height: 300px;">
+      <canvas id="statusChart"></canvas>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <h5 class="text-center">Monthly Invoice Totals</h5>
+    <div style="height: 300px;">
+      <canvas id="trendChart"></canvas>
+    </div>
+  </div>
+</div>
+
+<div class="text-center mt-4">
+  <button onclick="window.print()" class="btn btn-outline-secondary">🖨️ Print Dashboard</button>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+const paidCount = {{ paid_count | tojson }};
+const unpaidCount = {{ unpaid_count | tojson }};
+const monthLabels = {{ month_labels | tojson }};
+const monthlyTotals = {{ monthly_totals | tojson }};
+const forecastTotals = {{ forecast_totals | tojson }};
+
+new Chart(document.getElementById('statusChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Paid', 'Unpaid'],
+    datasets: [{
+      label: 'Invoice Count',
+      data: [paidCount, unpaidCount],
+      backgroundColor: ['#28a745', '#dc3545']
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: { legend: { display: false } },
+    scales: { y: { beginAtZero: true, ticks: { precision: 0 } } }
+  }
+});
+
+new Chart(document.getElementById('trendChart'), {
+  type: 'line',
+  data: {
+    labels: monthLabels.concat(['Next 1', 'Next 2', 'Next 3']),
+    datasets: [{
+      label: 'Monthly Totals ($)',
+      data: monthlyTotals.concat(forecastTotals),
+      borderColor: '#007bff',
+      backgroundColor: 'rgba(0, 123, 255, 0.1)',
+      fill: true,
+      tension: 0.3
+    }]
+  },
+  options: {
+    responsive: true,
+    scales: {
+      y: { beginAtZero: true }
+    }
+  }
+});
+</script>
+{% endblock %}

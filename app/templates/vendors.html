@@ -1,0 +1,43 @@
+{% extends "layout.html" %}
+{% block content %}
+<h2 class="mb-4">Vendors</h2>
+
+<form method="GET" class="mb-3">
+  <input type="text" name="q" class="form-control" placeholder="Search vendors by name or contact info..." value="{{ request.args.get('q', '') }}">
+</form>
+
+<a href="{{ url_for('main.add_vendor') }}" class="btn btn-primary mb-3">+ Add New Vendor</a>
+
+<table class="table table-hover">
+  <thead class="table-light">
+    <tr>
+      <th>Name</th>
+      <th>Contact Info</th>
+      <th>Address</th>
+      <th>Status</th>
+      <th>Created</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for vendor in vendors %}
+    <tr>
+      <td>{{ vendor.name }}</td>
+      <td>{{ vendor.contact_info }}</td>
+      <td>{{ vendor.address }}</td>
+      <td>
+        {% if vendor.status == 'active' %}
+        <span class="badge bg-success">Active</span>
+        {% else %}
+        <span class="badge bg-secondary">Inactive</span>
+        {% endif %}
+      </td>
+      <td>{{ vendor.created_at.strftime('%Y-%m-%d') }}</td>
+    </tr>
+    {% else %}
+    <tr>
+      <td colspan="5" class="text-center"><em>No vendors found.</em></td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}
